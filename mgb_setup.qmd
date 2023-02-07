@@ -1,0 +1,45 @@
+---
+title: "Setting up the MGB workspace"
+---
+
+**1. Installing the VPN**
+
+-   The instructions for installing the VPN can be obtained \\href{ https://www.partners.org/vpn/Token-Less-VPN.pdf}{here}
+
+-   On Cisco AnyConnect, connect to pvc.partners.org/saml, then enter your credentials
+
+**2. Setting up ErisONE**
+
+-   Submit the following \\href{ https://rc.partners.org/erisone-cluster-account-request}{request form} to obtain access to ERISOne.
+
+-   Follow the instructions provided in the \\href{https://rc.partners.org/kb/article/2814}{Quick Start guide}.
+
+-   \\href{https://rc.partners.org/kb/computational-resources/faq-erisone?article=3476}{Documentation} on submitting jobs and job resources at ERISOne
+
+-   You may access Partner's \\href{https://rstudio.partners.org}{RStudio} instead of creating an interactive R session.
+
+3.  **Setting up the Microsoft virtual desktop**
+
+-   In order to create a Windows Analysis Server account (HPCWIN3) and access to the virtual desktop, submit the following \\href{ https://rc.partners.org/windows-analysis-server-account-request}{request form}
+
+-   Download and install Microsoft Remote Desktop (you can download it \\href{https://apps.apple.com/us/app/microsoft-remote-desktop-10/id1295203466?mt=12}{here} for example).
+
+-   Create a new connection. Connect to HPCWin3 using hpcwin3.research.partners.org. Enter the \\href{ https://rc.partners.org/kb/article/2599}{following information} in order to connect to the virtual desktop.
+
+3.  **Accessing the data from the Microsoft virtual desktop**
+
+-   Open Microsoft SQL server
+
+-   Login by selecting Database Engine and SQL server authentication
+
+    Sever type: Database engine
+
+    Server name: phsqlrpdr322.partners.org
+
+Authentification: SQL server authentification
+
+-   The password is found in Properties.txt file. An example of this files is located here:\\\\ \\textcolor{BrickRed}{/data/pdc/NLP/Delivery\\textunderscore run\\textunderscore 80K/i2b2DownloaderProperties.txt}
+
+-   The only database directly accessible to us is Biobank\\textunderscore Note\\textunderscore Review. For the other databases, an IRB is necessary.
+
+-   The main database of interest is located in BiobankNote\\textunderscore Review and is called observation\\textunderscore fact. The latest is observation\\textunderscore fact\\textunderscore\\textunderscore 20201124\\textunderscore 592, and the dataset observation\\textunderscore fact points to the latest data. The dataset contains codified data as well as textual data, located in the column OBSERVATION\\textunderscore BLOB.

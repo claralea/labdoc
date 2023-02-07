@@ -1,0 +1,22 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Lab Resources"
+  navbar:
+    left:
+      - href: index.qmd
+        text: File Search
+      - about.qmd
+      - mapping.qmd
+      - dictionaries.qmd
+
+
+format:
+  html:
+    theme: lux
+    toc: true
+css: styles.css
+editor: visual
+

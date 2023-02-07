@@ -1,0 +1,86 @@
+---
+title: "Tools"
+urlcolor: cyan
+linkcolor: magenta
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 
+
+## 1. Running NER
+
+NER takes as input raw text and returns the main CUIs for a given .txt file.
+
+1.  Go to /n/data1/hsph/biostat/celehs/lab/NER/NER_AllInOne
+2.  Go to the folder /articles, save the input text file there under the name Articles.txt
+3.  To run NER on each line separately, use the line separator -\[wiki_article_start\]
+4.  Go to the folder /NER_AllInOne and run NER
+
+```{bash, eval=FALSE}
+module load gcc
+module load java
+sh runMiniNERAllInOne.sh
+```
+
+5.  The results are saved as NER_output.txt in the folder /results. The dropped CUIs are displayed in the terminal.
+
+## 2. Running cooccurrence
+
+1.  Create a new folder and upload and unzip the contents of ppmi-svd-master in the new folder.
+2.  Then activate your conda environment using \`conda activate ppmi\` or \`source activate path_of_your_conda_env\`. Get the path of your environment using \`conda env list\`
+3.  install the package slepc=3.12 using \`conda install -c conda-forge slepc=3.12\`. Even if there is an error in this step, you can continue with the following:
+4.  Go to ppmi-svd-master folder and do the following- There might still be errors in this step - these would mostly for the embedding calculator
+
+```{bash, eval=FALSE}
+mkdir build
+cd build
+cmake ..
+make -j 5
+```
+
+5.  A bin folder will be created inside ../ppmi_svd_master. If you can see the the executable "enumeratepairs" then you should be all set.
+
+## 3. Running NILE
+
+Detailed information on NILE can be found in the \[NILE user guide\](https://celehs.github.io/NILE_User_Guide_2019.pdf).
+
+1.  Set up the environment variable for NLP to run.
+
+\\textbf{Option 1:} Edit your \~/.bashrc file and add the following export command to it:
+
+```{bash, eval=FALSE}
+export NLP_INTF_HOME="/n/data1/hsph/biostat/celehs/lab/NLP/NLP_ORACLE"
+```
+
+Then restart the session to reflect the changes. Now every time a session is started, the environment variable is set up.
+
+\\textbf{Option 2:} Use the following command before running NLP on O2:
+
+```{bash, eval=FALSE}
+export NLP_INTF_HOME="/n/data1/hsph/biostat/celehs/lab/NLP/NLP_ORACLE"
+```
+
+2.  Make the Database Connection. The file NLPproperties.txt is located here:
+
+/n/data1/hsph/biostat/celehs/lab/NLP/NLP\\textunderscore ORACLE/project/uu/input/NLPproperties.txt
+
+In order to make the database connection, edit the file NLPproperties.txt so that it contains the required information.
+
+3.  Save the dictionary in the path specified in the above NLPproperties.txt file under \\textcolor{BrickRed}{uu\\textunderscore dict.txt}
+4.  From the terminal, go back to the main folder \\textcolor{BrickRed}{/n/data1/hsph/biostat/celehs/lab/NLP/NLP\\textunderscore ORACLE} and run:
+
+```{bash, eval=FALSE}
+module load java
+run mysql_runnile.sh
+```
+
+5.  The output will be generated here:
+
+    /n/data1/hsph/biostat/celehs/lab/NLP/NLP_ORACLE/project/uu/OUTPUT
+
+    The warning and eventual error messages will be logged here:
+
+    /n/data1/hsph/biostat/celehs/lab/NLP/NLP_ORACLE/project/uu/log

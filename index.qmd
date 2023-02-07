@@ -1,0 +1,106 @@
+---
+title: "File search"
+---
+
+Find a file using the table bellow.
+
+```{r, echo=FALSE, message=FALSE}
+library('shiny')
+library('magrittr')
+library('reactable')
+library('tippy')
+library('tidyverse')
+library('googlesheets4')
+
+#test = read.dcf('/Users/clara-lea/Desktop/DESCRIPTION')
+render.reactable.cell.with.tippy <- function(text, tooltip){
+  div(
+    style = "text-decoration: underline;
+                text-decoration-style: dotted;
+                text-decoration-color: #FF6B00;
+                cursor: info;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;",
+    tippy(text = text, tooltip = tooltip)
+  )
+}
+
+googlesheets4::gs4_deauth()
+table.content = googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1NJzM238fAaFtNcaz1T8JYV_2xrfQzbyghJjqaC4TJz4")
+
+table = table.content %>%
+  reactable(
+    #minRows = 20,
+    #showPageSizeOptions = TRUE,
+    filterable = TRUE,
+    searchable = TRUE,
+    sortable = FALSE,
+    showSortable = TRUE,
+    defaultSortOrder = "asc",
+    #groupBy = "category"
+    bordered = FALSE, 
+    striped = FALSE, 
+    highlight = TRUE,
+    
+    theme = reactableTheme(
+      borderColor = "#dfe2e5",
+      #stripedColor = "#f6f8fa",
+      highlightColor = "#f0f5f9",
+      #cellPadding = "8px 12px",
+      #style = list(fontFamily = "-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif"),
+      searchInputStyle = list(width = "100%")
+    ),
+    
+    defaultColDef = colDef(
+      cell = function(value) format(value, nsmall = 1),
+      #align = "center",
+      headerStyle = list(background = "#f7f7f8"),
+      sortNALast = TRUE
+    ),
+    
+    #groupBy = "project",
+    #defaultExpanded = TRUE,
+    
+    columns = list(
+      name = colDef(name="File Name", width = 300),
+      institution = colDef(name="Institution", width = 150, defaultSortOrder = "asc",sortable = TRUE),
+      phenotype = colDef(name="Phenotype", width = 150, defaultSortOrder = "asc",sortable = TRUE,
+                       style = JS("function(rowInfo, colInfo, state) {
+        var firstSorted = state.sorted[0]
+        // Merge cells if unsorted or sorting by category
+        if (!firstSorted || firstSorted.id === 'category') {
+          var prevRow = state.pageRows[rowInfo.viewIndex - 1]
+          if (prevRow && rowInfo.row['category'] === prevRow['category']) {
+            return { visibility: 'hidden' }
+          }
+        }
+      }")),
+      category = colDef(name="Data Type", defaultSortOrder = "asc",sortable = TRUE, minWidth = 130,
+                        style = JS("function(rowInfo, colInfo, state) {
+        var firstSorted = state.sorted[0]
+        // Merge cells if unsorted or sorting by category
+        if (!firstSorted || firstSorted.id === 'category') {
+          var prevRow = state.pageRows[rowInfo.viewIndex - 1]
+          if (prevRow && rowInfo.row['category'] === prevRow['category']) {
+            return { visibility: 'hidden' }
+          }
+        }
+      }")),
+      description = colDef(name="Description", width = 300),
+      path = colDef(name="Path", width = 300),
+      author = colDef(name="Author", width = 150),
+      date = colDef(name="Date"),
+      project = colDef(name="Project",defaultSortOrder = "asc",sortable = TRUE),
+      comment = colDef(name = "Comment", width = 200, filterable = FALSE,
+                       cell =  function(value, index, name) {
+                         render.reactable.cell.with.tippy(text = value, tooltip = value)})
+      
+      # description = colDef(name="Description", width = 300,
+      #                 cell =  function(value, index, name) {
+      #            render.reactable.cell.with.tippy(text = value, tooltip = value)}),
+      
+    )
+  )
+table
+```
